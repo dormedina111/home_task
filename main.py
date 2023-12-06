@@ -22,7 +22,7 @@ pool_mutex = threading.Lock()
 def allocate_slaves(amount, duration):
     with pool_mutex:
         if len(slave_pool) >= amount:
-            # making new list of the allocated ip's and modifying the slave_pool list
+            # making new list of the allocated IPs and modifying the slave_pool list
             allocated = [slave_pool.pop(0) for _ in range(amount)]
             for slave in allocated:
                 allocated_slaves[slave] = time.time() + duration
@@ -92,7 +92,7 @@ class ServerHandler(http.server.SimpleHTTPRequestHandler):
             response = {"slaves": allocated_slaves}
             logging.info(f"Allocated slaves: {allocated_slaves}")
         else:
-            # Estimate wait time for slaves (simple estimation)
+            # Compute wait time for slaves
             wait_time = return_wait_time(amount)
             response = {"slaves": [], "come_back": int(wait_time)}
             logging.info("Not enough slaves available. Asked to come back later.")
